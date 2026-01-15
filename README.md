@@ -1,5 +1,7 @@
 # TextSigns
 
+![LOGO](https://github.com/DanielNovaesDias/TextSigns/blob/main/src/main/resources/Common/UI/leniad_TextSigns.png "Logo")
+
 A hytale plugin that overwrites all native signs so that they can be written to and displays their message in a HUD. 
 
 
