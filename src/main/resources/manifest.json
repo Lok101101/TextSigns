@@ -7,10 +7,10 @@
     {
       "Name": "Daniel Novaes Dias",
       "Email": "danynovaisdias@outlook.com",
-      "Url": "https://your-website.com"
+      "Url": "https://github.com/DanielNovaesDias/TextSigns"
     }
   ],
-  "Website": "https://github.com/yourusername/hytale-plugin-template",
+  "Website": "https://github.com/DanielNovaesDias/TextSigns",
   "Main": "com.leniad.textsigns.TextSigns",
   "ServerVersion": "*",
   "Dependencies": {},
