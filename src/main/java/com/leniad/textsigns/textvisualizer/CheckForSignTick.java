@@ -12,15 +12,17 @@ import com.hypixel.hytale.server.core.util.TargetUtil;
 import com.leniad.textsigns.SignTextsRegistry;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CheckForSignTick extends EntityTickingSystem<EntityStore> {
 
     @Nonnull
     private final Query<EntityStore> query;
 
-    private Vector3i lastSeenBlock = new Vector3i(0,0,0);
+    //private Vector3i lastSeenBlock = new Vector3i(0,0,0);
 
-    private TextVisualizer hud;
+    private final Map<PlayerRef, TextVisualizer> huds = new HashMap<>();
 
 
     public CheckForSignTick() {
@@ -32,22 +34,26 @@ public class CheckForSignTick extends EntityTickingSystem<EntityStore> {
 
         Holder<EntityStore> holder = EntityUtils.toHolder(index, archetypeChunk);
         Player player = holder.getComponent(Player.getComponentType());
+
         PlayerRef playerRef = holder.getComponent(PlayerRef.getComponentType());
         Ref<EntityStore> entStore = player.getReference();
 
 
+        TextVisualizer hud = this.huds.get(playerRef);
+
         if (entStore != null && playerRef != null) {
             Vector3i selectedBlock = getSelectedBlockPos(entStore);
 
-            if (java.util.Objects.equals(lastSeenBlock, selectedBlock)) {
-                return;
-            }
+            //if (java.util.Objects.equals(lastSeenBlock, selectedBlock)) {
+            //    return;
+            //}
 
-            lastSeenBlock = selectedBlock;
+            //lastSeenBlock = selectedBlock;
 
             if (selectedBlock == null) {
-                if (this.hud != null) {
-                    this.hud.setShouldDisplay(false);
+
+                if (hud != null) {
+                    hud.setShouldDisplay(false);
                     hud.show();
                 }
 
@@ -58,10 +64,11 @@ public class CheckForSignTick extends EntityTickingSystem<EntityStore> {
 
             if (value != null && !value.isEmpty()) {
                 if (hud == null) {
-                    hud = new TextVisualizer(playerRef);
-                    hud.setShouldDisplay(true);
-                    hud.setText(value);
-                    player.getHudManager().setCustomHud(playerRef, hud);
+                    TextVisualizer newHud = new TextVisualizer(playerRef);
+                    newHud.setShouldDisplay(true);
+                    newHud.setText(value);
+                    player.getHudManager().setCustomHud(playerRef, newHud);
+                    huds.put(playerRef, newHud);
                 } else {
                     hud.setShouldDisplay(true);
                     hud.setText(value);
