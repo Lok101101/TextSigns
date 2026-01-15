@@ -4,10 +4,8 @@ import com.hypixel.hytale.component.*;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.tick.EntityTickingSystem;
 import com.hypixel.hytale.math.vector.Vector3i;
-import com.hypixel.hytale.server.core.entity.Entity;
 import com.hypixel.hytale.server.core.entity.EntityUtils;
 import com.hypixel.hytale.server.core.entity.entities.Player;
-import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.util.TargetUtil;
@@ -15,12 +13,14 @@ import com.leniad.textsigns.SignTextsRegistry;
 
 import javax.annotation.Nonnull;
 
-import static com.hypixel.hytale.logger.HytaleLogger.getLogger;
-
 public class CheckForSignTick extends EntityTickingSystem<EntityStore> {
 
     @Nonnull
     private final Query<EntityStore> query;
+
+    private Vector3i lastSeenBlock = new Vector3i(0,0,0);
+
+    private TextVisualizer hud;
 
 
     public CheckForSignTick() {
@@ -36,34 +36,56 @@ public class CheckForSignTick extends EntityTickingSystem<EntityStore> {
         Ref<EntityStore> entStore = player.getReference();
 
 
-        //if (entStore != null) {
-        //   Vector3i selectedBlock = getSelectedBlockPos(entStore);
-//
-        //    String value = getSignMetaData(selectedBlock, store);
-//
-        //    if (value != null && !value.isEmpty()) {
-        //        TextVisualizer hud = new TextVisualizer(playerRef);
-        //
-        //    }
-        //}
+        if (entStore != null && playerRef != null) {
+            Vector3i selectedBlock = getSelectedBlockPos(entStore);
+
+            if (java.util.Objects.equals(lastSeenBlock, selectedBlock)) {
+                return;
+            }
+
+            lastSeenBlock = selectedBlock;
+
+            if (selectedBlock == null) {
+                if (this.hud != null) {
+                    this.hud.setShouldDisplay(false);
+                    hud.show();
+                }
+
+                return;
+            }
+
+            String value = getSignMetaData(selectedBlock, store);
+
+            if (value != null && !value.isEmpty()) {
+                if (hud == null) {
+                    hud = new TextVisualizer(playerRef);
+                    hud.setShouldDisplay(true);
+                    hud.setText(value);
+                    player.getHudManager().setCustomHud(playerRef, hud);
+                } else {
+                    hud.setShouldDisplay(true);
+                    hud.setText(value);
+                    hud.show();
+                }
+            } else {
+                if (hud != null) {
+                    hud.setShouldDisplay(false);
+                    hud.show();
+                }
+
+            }
+        }
 
     }
 
     public String getSignMetaData(Vector3i blockPos, @Nonnull Store<EntityStore> store) {
         SignTextsRegistry res = store.getResource(SignTextsRegistry.getResourceType());
         String text = res.get(blockPos);
-        getLogger().atInfo().log(text);
         return text != null ? text : "";
     }
 
     private Vector3i getSelectedBlockPos(Ref<EntityStore> ref) {
-        TransformComponent transform = ref.getStore().getComponent(ref, TransformComponent.getComponentType());
-        assert transform != null;
-
-        Vector3i targetBlockPos = TargetUtil.getTargetBlock(ref, 5.0, ref.getStore());
-        assert  targetBlockPos != null;
-
-        return targetBlockPos;
+        return TargetUtil.getTargetBlock(ref, 5, ref.getStore());
     }
 
 

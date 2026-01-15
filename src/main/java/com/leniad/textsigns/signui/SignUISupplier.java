@@ -19,7 +19,7 @@ public class SignUISupplier implements OpenCustomUIInteraction.CustomPageSupplie
     @Nonnull
     @Override
     public CustomUIPage tryCreate(Ref<EntityStore> ref, ComponentAccessor<EntityStore> componentAccessor, @Nonnull PlayerRef playerRef, InteractionContext context) {
-        return new SignUI(playerRef, CustomPageLifetime.CanDismiss);
+        return new SignUI(playerRef, CustomPageLifetime.CanDismissOrCloseThroughInteraction);
     }
 
 }

@@ -1,10 +1,12 @@
 package com.leniad.textsigns;
 
 import com.hypixel.hytale.component.ResourceType;
+import com.hypixel.hytale.server.core.event.events.ecs.BreakBlockEvent;
 import com.hypixel.hytale.server.core.modules.interaction.interaction.config.server.OpenCustomUIInteraction;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import com.leniad.textsigns.deletesign.DeleteSign;
 import com.leniad.textsigns.signui.SignUISupplier;
 import com.leniad.textsigns.SignTextsRegistry;
 import com.leniad.textsigns.textvisualizer.CheckForSignTick;
@@ -36,6 +38,8 @@ public class TextSigns extends JavaPlugin {
                 "SignTextsRegistry",
                 SignTextsRegistry.CODEC
         );
+
+        this.getEntityStoreRegistry().registerSystem(new DeleteSign(BreakBlockEvent.class));
 
         this.getEntityStoreRegistry().registerSystem(new CheckForSignTick());
 

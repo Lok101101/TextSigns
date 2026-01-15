@@ -1,16 +1,15 @@
 Group #TextSignHud {
   LayoutMode: Center;
+  Anchor: (Top: -180);
+
   Group #Content {
     Background: (TexturePath: "../../Common/TooltipDefaultBackground.png", Border: 20);
-    Padding: (Horizontal: 20, Vertical: 20);
-    LayoutMode: Left;
-    Group #IconContainer {
+    Anchor: (Width: 400, Height: 100);
+    Padding: (Horizontal: 10, Vertical: 10);
+    LayoutMode: Center;
 
-    }
-    Group #SignContent {
-        Anchor: (Left: 20);
-        LayoutMode: Top;
-        Padding: (Right: 10);
+    Label #SignContent {
+        Style: (Alignment: Center, FontSize: 20);
     }
   }
 }

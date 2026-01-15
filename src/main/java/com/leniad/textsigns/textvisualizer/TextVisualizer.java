@@ -7,14 +7,34 @@ import javax.annotation.Nonnull;
 
 public class TextVisualizer extends CustomUIHud {
 
+    private boolean shouldDisplay = false;
+    private String text = "";
+
     public TextVisualizer(@Nonnull PlayerRef playerRef) {
         super(playerRef);
     }
 
 
     protected void build(@Nonnull UICommandBuilder ui) {
-        ui.append("Pages/TextSigns/TextVisualizer.ui");
-        ui.set("#SignContent.Text", "Teste");
+
+        if (shouldDisplay) {
+            ui.append("Pages/TextSigns/TextVisualizer.ui");
+            ui.set("#SignContent.Text", text);
+        }
+
+
     }
 
+
+    public void setShouldDisplay(boolean shouldDisplay) {
+        this.shouldDisplay = shouldDisplay;
+    }
+
+    public boolean getShouldDisplay() {
+        return this.shouldDisplay;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
 }

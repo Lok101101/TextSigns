@@ -42,6 +42,10 @@ public class SignTextsRegistry implements Resource<EntityStore> {
                     o -> {
                         Map<String, String> out = new HashMap<>();
                         o.SavedSigns.forEach((pos, v) -> {
+                            if (pos == null) {
+                                pos = new Vector3i(0, 0, 0);
+                            }
+
                             out.put(
                                     pos.x + "," + pos.y + "," + pos.z,
                                     v

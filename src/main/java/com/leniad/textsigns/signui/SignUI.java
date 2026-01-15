@@ -67,16 +67,8 @@ public class SignUI extends InteractiveCustomUIPage<SignUI.PageData> {
         return text != null ? text : "";
     }
 
-
-
     private Vector3i getSelectedBlockPos(Ref<EntityStore> ref) {
-        TransformComponent transform = ref.getStore().getComponent(ref, TransformComponent.getComponentType());
-        assert transform != null;
-
-        Vector3i targetBlockPos = TargetUtil.getTargetBlock(ref, 5.0, ref.getStore());
-        assert  targetBlockPos != null;
-
-        return targetBlockPos;
+        return TargetUtil.getTargetBlock(ref, 5, ref.getStore());
     }
 
     public static class PageData {
