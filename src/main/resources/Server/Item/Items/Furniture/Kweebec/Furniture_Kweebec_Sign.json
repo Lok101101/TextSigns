@@ -47,7 +47,8 @@
         "Material": "Solid",
         "Opacity": "Transparent",
         "ParticleColor": "#633625",
-        "VariantRotation": "NESW"
+        "VariantRotation": "NESW",
+        "IgnoreSupportWhenPlaced": true
     },
     "ResourceTypes": [
         {

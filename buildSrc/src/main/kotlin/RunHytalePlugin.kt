@@ -134,7 +134,7 @@ open class RunServerTask : DefaultTask() {
                 "Please ensure assetsPath is correctly configured in build.gradle.kts"
             )
         }
-        
+
         val assetsFile = File(runDir, sourceAssets.name)
         sourceAssets.copyTo(assetsFile, overwrite = true)
         println("Assets copied to: ${assetsFile.absolutePath}")
@@ -148,14 +148,18 @@ open class RunServerTask : DefaultTask() {
         
         if (debugMode) {
             javaArgs.add("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005")
+
             println("Debug mode enabled. Connect debugger to port 5005")
         }
+
+
         
         javaArgs.addAll(listOf("-jar", jarFile.name))
         
         // Add assets argument (mandatory)
         javaArgs.add("--assets")
         javaArgs.add(assetsFile.name)
+
 
         // Start the server process
         val process = ProcessBuilder("java", *javaArgs.toTypedArray())

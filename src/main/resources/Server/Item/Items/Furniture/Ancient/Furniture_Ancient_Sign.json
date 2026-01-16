@@ -84,6 +84,7 @@
       ]
     },
     "VariantRotation": "NESW",
+    "IgnoreSupportWhenPlaced": true,
     "ParticleColor": "#3e352a"
   },
   "ResourceTypes": [

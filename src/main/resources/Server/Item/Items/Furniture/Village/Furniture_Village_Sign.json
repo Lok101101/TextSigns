@@ -35,6 +35,7 @@
         ],
         "HitboxType": "Sign_Side",
         "VariantRotation": "NESW",
+        "IgnoreSupportWhenPlaced": true,
         "Gathering": {
             "Soft": {
                 "IsWeaponBreakable": false

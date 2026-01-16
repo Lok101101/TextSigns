@@ -68,7 +68,8 @@
         }
       ]
     },
-    "VariantRotation": "NESW"
+    "VariantRotation": "NESW",
+    "IgnoreSupportWhenPlaced": true
   },
   "Tags": {
     "Type": [

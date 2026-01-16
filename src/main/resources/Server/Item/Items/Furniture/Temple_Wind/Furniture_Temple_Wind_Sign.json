@@ -67,7 +67,8 @@
                 }
             ]
         },
-        "VariantRotation": "NESW"
+        "VariantRotation": "NESW",
+        "IgnoreSupportWhenPlaced": true
     },
     "ResourceTypes": [
         {
