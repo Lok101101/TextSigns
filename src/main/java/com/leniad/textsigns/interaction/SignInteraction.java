@@ -5,9 +5,11 @@ import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.logger.HytaleLogger;
+import com.hypixel.hytale.math.util.ChunkUtil;
 import com.hypixel.hytale.math.vector.Vector3i;
 import com.hypixel.hytale.protocol.InteractionType;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
+import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.entity.InteractionContext;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.CustomUIPage;
@@ -18,7 +20,9 @@ import com.hypixel.hytale.server.core.modules.interaction.interaction.config.cli
 import com.hypixel.hytale.server.core.modules.interaction.interaction.config.server.OpenContainerInteraction;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
+import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
 import com.hypixel.hytale.server.core.universe.world.meta.BlockState;
+import com.hypixel.hytale.server.core.universe.world.meta.BlockStateModule;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.leniad.textsigns.signui.SignUI;
 import com.leniad.textsigns.signui.SignUISupplier;
@@ -34,6 +38,8 @@ public class SignInteraction extends SimpleBlockInteraction {
     @SuppressWarnings("deprecation")
     @Override
     protected void interactWithBlock(@NotNull World world, @NotNull CommandBuffer<EntityStore> commandBuffer, @NotNull InteractionType interactionType, @NotNull InteractionContext interactionContext, @Nullable ItemStack itemStack, @NotNull Vector3i pos, @NotNull CooldownHandler cooldownHandler) {
+        BlockType blockType = world.getBlockType(pos);
+
         BlockState sign = world.getState(pos.x, pos.y, pos.z, true);
 
         if (sign instanceof SignState) {
@@ -42,6 +48,23 @@ public class SignInteraction extends SimpleBlockInteraction {
             Player playerComponent = commandBuffer.getComponent(ref, Player.getComponentType());
             PlayerRef playerRef = commandBuffer.getComponent(ref, PlayerRef.getComponentType());
 
+            if (playerRef != null && playerComponent != null) {
+                SignUISupplier signPageSupplier = new SignUISupplier();
+                Vector3i pos_sign = new Vector3i(pos.x, pos.y, pos.z);
+                CustomUIPage page = signPageSupplier.tryCreateWithPos(ref, commandBuffer, playerRef, interactionContext, pos_sign);
+                playerComponent.getPageManager().openCustomPage(ref, store, page);
+            }
+        } else {
+            world.execute(() -> {
+                WorldChunk chunk = world.getChunkIfInMemory(ChunkUtil.indexChunkFromBlock(pos.x, pos.z));
+                BlockState state = BlockStateModule.get().createBlockState("SignState", chunk, pos, blockType);
+                chunk.setState(pos.x, pos.y, pos.z, state, true);
+            });
+
+            Ref<EntityStore> ref = interactionContext.getEntity();
+            Store<EntityStore> store = ref.getStore();
+            Player playerComponent = commandBuffer.getComponent(ref, Player.getComponentType());
+            PlayerRef playerRef = commandBuffer.getComponent(ref, PlayerRef.getComponentType());
 
             if (playerRef != null && playerComponent != null) {
                 SignUISupplier signPageSupplier = new SignUISupplier();

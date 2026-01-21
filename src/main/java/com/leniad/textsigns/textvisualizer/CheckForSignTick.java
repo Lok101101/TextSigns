@@ -55,14 +55,6 @@ public class CheckForSignTick extends EntityTickingSystem<EntityStore> {
 
             Vector3i selectedBlock = getSelectedBlockPos(entStore);
 
-
-
-            //if (java.util.Objects.equals(lastSeenBlock, selectedBlock)) {
-            //    return;
-            //}
-
-            //lastSeenBlock = selectedBlock;
-
             if (selectedBlock == null) {
 
                 if (hud != null) {
@@ -73,40 +65,44 @@ public class CheckForSignTick extends EntityTickingSystem<EntityStore> {
                 return;
             }
 
-            BlockState signData = entStore.getStore().getExternalData().getWorld().getState(selectedBlock.x, selectedBlock.y, selectedBlock.z, true);
+            entStore.getStore().getExternalData().getWorld().execute(() -> {
+                    BlockState signData = entStore.getStore().getExternalData().getWorld().getState(selectedBlock.x, selectedBlock.y, selectedBlock.z, true);
 
-            if (signData instanceof SignState) {
-                String value = ((SignState) signData).getSignText();
+                    if (signData instanceof SignState) {
+                        String value = ((SignState) signData).getSignText();
 
-                if (value != null && !value.isEmpty()) {
-                    if (hud == null) {
-                        TextVisualizer newHud = new TextVisualizer(playerRef);
-                        newHud.setShouldDisplay(true);
-                        newHud.setText(value);
+                        if (value != null && !value.isEmpty()) {
+                            if (hud == null) {
+                                TextVisualizer newHud = new TextVisualizer(playerRef);
+                                newHud.setShouldDisplay(true);
+                                newHud.setText(value);
 
-                        this.showHideUI(newHud, player, playerRef);
+                                this.showHideUI(newHud, player, playerRef);
 
-                        huds.put(playerRef, newHud);
+                                huds.put(playerRef, newHud);
+                            } else {
+                                hud.setShouldDisplay(true);
+                                hud.setText(value);
+
+                                this.showHideUI(hud, player, playerRef);
+
+                            }
+                        } else {
+                            if (hud != null) {
+                                hud.setShouldDisplay(false);
+                                this.showHideUI(hud, player, playerRef);
+                            }
+
+                        }
                     } else {
-                        hud.setShouldDisplay(true);
-                        hud.setText(value);
-
-                        this.showHideUI(hud, player, playerRef);
-
+                        if (hud != null) {
+                            hud.setShouldDisplay(false);
+                            this.showHideUI(hud, player, playerRef);
+                        }
                     }
-                } else {
-                    if (hud != null) {
-                        hud.setShouldDisplay(false);
-                        this.showHideUI(hud, player, playerRef);
-                    }
+            });
 
-                }
-            } else {
-                if (hud != null) {
-                    hud.setShouldDisplay(false);
-                    this.showHideUI(hud, player, playerRef);
-                }
-            }
+
         }
 
     }
