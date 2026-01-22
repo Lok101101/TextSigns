@@ -3,7 +3,6 @@ Group #TextSignHud {
   Anchor: (Top: -180);
 
   Group #Content {
-    Background: (TexturePath: "../../Common/TooltipDefaultBackground.png", Border: 20);
     Anchor: (Width: 400, Height: 100);
     Padding: (Horizontal: 10, Vertical: 10);
     LayoutMode: Center;
