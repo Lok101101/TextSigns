@@ -1,6 +1,5 @@
 package com.leniad.textsigns.textvisualizer;
 
-import com.hypixel.hytale.protocol.packets.interface_.CustomUICommand;
 import com.hypixel.hytale.server.core.entity.entities.player.hud.CustomUIHud;
 import com.hypixel.hytale.server.core.ui.Value;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
@@ -9,10 +8,12 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.ui.PatchStyle;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
 
 public class TextVisualizer extends CustomUIHud {
     private String text = "";
     private boolean shouldDisplay = false;
+    private final PatchStyle bg = new PatchStyle().setBorder(Value.of(20)).setTexturePath(Value.of("Common/TooltipDefaultBackground.png"));
 
     public TextVisualizer(@Nonnull PlayerRef playerRef, String text, boolean shouldDisplay) {
         super(playerRef);
@@ -32,19 +33,20 @@ public class TextVisualizer extends CustomUIHud {
         this.updateUI();
     }
 
+    public boolean getShouldDisplay() {
+        return shouldDisplay;
+    }
+
     protected void build(@Nonnull UICommandBuilder ui) {
         ui.append("Pages/TextSigns/TextVisualizer.ui");
         this.setCommands(ui);
     }
 
     private void setCommands(@Nonnull UICommandBuilder ui) {
-        PatchStyle bg = new PatchStyle().setBorder(Value.of(20)).setTexturePath(Value.of("Common/TooltipDefaultBackground.png"));
-
-
         if (!this.shouldDisplay) {
-            ui.set("#Content.Background.Color", "#ffffff00");
+            ui.setObject("#Content.Background", new PatchStyle().setColor(Value.of("#ffffff00")));
         } else {
-            ui.setObject("#Content.Background", bg);
+            ui.setObject("#Content.Background", this.bg);
         }
 
         ui.set("#SignContent.Text", text);
