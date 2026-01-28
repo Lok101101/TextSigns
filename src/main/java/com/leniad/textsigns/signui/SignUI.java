@@ -40,8 +40,8 @@ public class SignUI extends InteractiveCustomUIPage<SignUI.PageData> {
         uiCommandBuilder.append("Pages/TextSigns/TextSign.ui");
         Vector3i blockPos = getSelectedBlockPos(ref);
         String currentValue = getSignMetaData(store);
-        uiCommandBuilder.set("#SignInput.Value", currentValue);
-        uiEventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged, "#SignInput", EventData.of("@SignText", "#SignInput.Value"), false);
+        uiCommandBuilder.set("#TXTSSignInput.Value", currentValue);
+        uiEventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged, "#TXTSSignInput", EventData.of("@SignText", "#TXTSSignInput.Value"), false);
     }
 
     @Override
@@ -58,12 +58,6 @@ public class SignUI extends InteractiveCustomUIPage<SignUI.PageData> {
         if (signState instanceof SignState) {
             ((SignState) signState).setSignText(data.signText);
         }
-
-        //if (data.signText != null) {
-        //    res.add(targetBlockPos, data.signText);
-        //} else {
-        //    res.delete(targetBlockPos);
-        //}
     }
 
     public String getSignMetaData(@Nonnull Store<EntityStore> store) {

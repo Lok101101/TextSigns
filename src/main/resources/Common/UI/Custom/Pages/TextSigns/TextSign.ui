@@ -16,7 +16,7 @@ $C.@Container {
      #Content {
             LayoutMode: Top;
 
-            $C.@TextField #SignInput {
+            $C.@TextField #TXTSSignInput {
                 @Anchor = (Left: 4, Bottom: 4);
 
                 PlaceholderText: %customUI.textSign.placeholder;

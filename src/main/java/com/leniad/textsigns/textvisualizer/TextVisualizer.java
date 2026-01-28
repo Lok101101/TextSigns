@@ -44,11 +44,11 @@ public class TextVisualizer extends CustomUIHud {
 
     private void setCommands(@Nonnull UICommandBuilder ui) {
         if (!this.shouldDisplay) {
-            ui.setObject("#Content.Background", new PatchStyle().setColor(Value.of("#ffffff00")));
+            ui.setObject("#TXTSContent.Background", new PatchStyle().setColor(Value.of("#ffffff00")));
         } else {
-            ui.setObject("#Content.Background", this.bg);
+            ui.setObject("#TXTSContent.Background", this.bg);
         }
 
-        ui.set("#SignContent.Text", text);
+        ui.set("#TXTSSignContent.Text", text);
     }
 }
